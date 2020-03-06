@@ -1,0 +1,121 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="col">
+        <div class="row">
+            <div class="col mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="e-profile">
+                            <div class="row">
+                                <div class="col-12 col-sm-auto mb-3">
+                                    <img src="{{current_user.profile_image_url()}}" alt="..." class="img-thumbnail"
+                                    id = 'thumbnail'
+                                        >
+                                </div>
+                                <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                    <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">
+                                            {{current_user.name}}</h4>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#staticBackdrop">
+                                            Change Profile Picture
+                                        </button>
+                                        <form action="{{url_for('users.private')}}" method="POST">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                            <button type="submit" class="btn btn-primary" >
+                                            Private Account
+                                        </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1"
+                                role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <!-- stlying my modal here -->
+                                    <div class="modal-content" >
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{{url_for('users.upload_img')}}" method="POST"
+                                            enctype="multipart/form-data">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                            <div class="modal-body">
+                                                <label>Select a new profile picture</label>
+                                                <br></br>
+                                                <input type="file" name="user_file" >
+                                            </div>
+                                            <div class="modal-body">
+                                                <img src="" height="200" alt="Image preview...">
+                                                <p>hello</p>
+                                            </div>                                           
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save
+                                                    Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                            </ul>
+                            <div class="tab-content pt-3">
+                                <div class="tab-pane active">
+                                    <form class="form" method="POST"
+                                        action="{{url_for('users.update', id = current_user.id)}}">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Username</label>
+                                                            <input class="form-control" type="text" name="username"
+                                                                value='{{current_user.name}}'
+                                                                placeholder="Your new username here">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Email</label>
+                                                            <input class="form-control" type="text" name='email'
+                                                                placeholder="Your new email here"
+                                                                value='{{current_user.email}}'>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col d-flex justify-content-end">
+                                                <button class="btn btn-primary" type="submit">Save Changes</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+{% endblock %}

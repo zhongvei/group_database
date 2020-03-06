@@ -1,0 +1,29 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <p>Requested to follow</p>
+            {% for request in requests %}
+            {% if not request.request %}
+            <div class="request">
+                <div class="together">
+                    <a href="{{url_for('users.show', username = request.fan.name)}}">
+                        <img src="{{request.fan.profile_image_url()}}" alt="..." class="rounded-circle icon">
+                      </a>
+                    <p class="username">{{request.fan.name}}</p>
+                </div>
+                <form action="{{url_for('followerfollowing.edit', fan = request.fan.name)}}" method="POST"> 
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />               
+                    <div class="together">
+                    <button type='submit' class="btn btn-info">Approve</button>
+                </div>
+                </form>
+            </div>
+            {% endif %}
+            {% endfor %}     
+        </div>
+    </div>
+</div>
+{% endblock %}

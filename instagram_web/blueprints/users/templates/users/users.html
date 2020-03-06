@@ -1,0 +1,129 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="card mycard">
+        <div class="margin_center">
+            <img class="profile_picture" src='{{user.profile_image_url()}}' ></img>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{user.name}}</p>
+            <p class="card-text">{{user.email}}</p>
+            {% if current_user.id == user.id %}
+            <a class="btn btn-primary" href="{{url_for('users.edit', id = current_user.id)}}" role="button">Edit
+                profile
+            </a>
+            <button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#staticBackdrop">
+                Upload Picture
+            </button>
+            <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1"
+                                role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <!-- stlying my modal here -->
+                                    <div class="modal-content" >
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{{url_for('images.create',username = current_user.name)}}" method="POST"
+                                            enctype="multipart/form-data">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                            <div class="modal-body">
+                                                <label>Select a new profile picture</label>
+                                                <br></br>
+                                                <input type="file" name="user_file" >
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save
+                                                    Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p data-toggle="modal" data-target="#exampleModalCenter1">Followers {{follower | length}}</p>
+            <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle1">Followers</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for fan in user.fans %}
+                        {% if fan.request %}
+                        <div class="follow">
+                          <a href="{{url_for('users.show', username = fan.fan.name)}}">
+                              <img src="{{fan.fan.profile_image_url()}}" alt="..." class="rounded-circle icon">
+                            </a>
+                          <p class="username">{{fan.fan.name}}</p>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <p data-toggle="modal" data-target="#exampleModalCenter">Following {{following | length}}</p>              
+              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for idol in user.idols %}
+                        {% if idol.request %}
+                        <div class="follow">
+                            <a href="{{url_for('users.show', username = idol.idol.name)}}">
+                                <img src="{{idol.idol.profile_image_url()}}" alt="..." class="rounded-circle icon">
+                              </a>
+                            <p class="username">{{idol.idol.name}}</p>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% if current_user != user %}          
+            {% if current_user.is_following(user.id) %}
+            <form action="{{url_for('followerfollowing.delete', idol_id = user.id)}}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class='btn btn-danger' type="submit">Unfollow</button>
+            </form>
+            {% else %}
+            <form action="{{url_for('followerfollowing.create', idol_id = user.id)}}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class='btn btn-primary' type="submit">Follow</button>
+            </form>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <hr class='line'/>
+    <div class="bottom_center">
+    {% for image in user.images %}
+        <img src="{{image.get_url()}}" class="img-thumbnail post_images">
+    {% endfor %}
+    </div>
+</div>
+</div>
+
+{% endblock %}
