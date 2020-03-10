@@ -9,6 +9,7 @@ class BaseModel(pw.Model):
     updated_at = pw.DateTimeField(default=datetime.datetime.now)
 
     def save(self, *args, **kwargs):
+        
         self.errors = []
         self.validate()
 
