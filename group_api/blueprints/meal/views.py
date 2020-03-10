@@ -59,7 +59,6 @@ def new_dinner():
 def create():
 
     resp = request.get_json()
-
     meal = resp.get('meal')
     food = resp.get('food')
     calories = resp.get('calories')
