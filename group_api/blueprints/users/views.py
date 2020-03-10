@@ -18,21 +18,21 @@ def index():
     
     return jsonify(user_data), 200
 
-@users_api_blueprint.route('/username', methods = ['GET'])
-def new():
-    if 'username' in request.args:
-        username = str(request.args['username'])
-    else:
-        user_data = {'error':'check your post'}
-        return jsonify(user_data)
-    user_data = []
-    user = User.get_or_none(User.name == username)
-    if not user:
-        user_data = {'error':'Not found'}
-        return jsonify(user_data)
-    user = model_to_dict(user)
-    user_data.append(user)
-    return jsonify(user_data), 200
+# @users_api_blueprint.route('/username', methods = ['GET'])
+# def new():
+#     if 'username' in request.args:
+#         username = str(request.args['username'])
+#     else:
+#         user_data = {'error':'check your post'}
+#         return jsonify(user_data)
+#     user_data = []
+#     user = User.get_or_none(User.name == username)
+#     if not user:
+#         user_data = {'error':'Not found'}
+#         return jsonify(user_data)
+#     user = model_to_dict(user)
+#     user_data.append(user)
+#     return jsonify(user_data), 200
     
 @users_api_blueprint.route('/create', methods = ['POST'])
 def create():
