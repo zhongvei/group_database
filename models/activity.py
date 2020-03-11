@@ -6,5 +6,5 @@ class Activity(BaseModel):
     activity = pw.CharField(unique = True)
     calories = pw.IntegerField()
 
-    def validate():
+    def validate(self):
         return
