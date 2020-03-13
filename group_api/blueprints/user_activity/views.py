@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.user import User
 from models.user_activity import User_Activity
 from models.activity import Activity
+from datetime import datetime, date
 
 user_activity_api_blueprint = Blueprint('user_activity', 
                                  __name__, 
@@ -52,11 +53,13 @@ def view():
     }
     user_arr.append(user_info)
     for activity in user.activity:
-        info = {
-            'activity': activity.activity.activity,
-            'calories': activity.activity.calories
-        }
-        act_arr.append(info)
+        if activity.created_at == date.today():
+            info = {
+                'activity': activity.activity.activity,
+                'calories': activity.activity.calories
+            }
+            act_arr.append(info)
+            
     dic['user'] = user_arr
     dic['activity'] = act_arr
 

@@ -50,23 +50,6 @@ def login():
             }
     
     return jsonify(message)
-
-
-# @users_api_blueprint.route('/username', methods = ['GET'])
-# def new():
-#     if 'username' in request.args:
-#         username = str(request.args['username'])
-#     else:
-#         user_data = {'error':'check your post'}
-#         return jsonify(user_data)
-#     user_data = []
-#     user = User.get_or_none(User.name == username)
-#     if not user:
-#         user_data = {'error':'Not found'}
-#         return jsonify(user_data)
-#     user = model_to_dict(user)
-#     user_data.append(user)
-#     return jsonify(user_data), 200
     
 @users_api_blueprint.route('/create', methods = ['POST'])
 def create():
@@ -108,7 +91,6 @@ def edit():
     weight = resp.get('weight')
     height = resp.get('height')
 
-
     if age != None:
         user.age = age
 
@@ -134,8 +116,3 @@ def edit():
 
     return jsonify(message)
 
-@users_api_blueprint.route('/test',methods = ['POST'])
-@jwt_required
-def test():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
