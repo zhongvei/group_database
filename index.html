@@ -33,27 +33,45 @@
           </form>
     </div>
     <script>
-        $('form').on('submit', function(e) {
-            const data = {
-                age: $('#age').val(),
-                gender: $('#gender').val(),
-                weight: $('#weight').val(),
-                height: $('#height').val()
-            }
+        // $('form').on('submit', function(e) {
+        //     const data = {
+        //         age: $('#age').val(),
+        //         gender: $('#gender').val(),
+        //         weight: $('#weight').val(),
+        //         height: $('#height').val()
+        //     }
+        //     e.preventDefault()
+        //     $.ajax({
+        //         url: 'http://127.0.0.1:5000/api/v1/users/test1/edit',
+        //         method: 'POST',
+        //         dataType: "JSON",
+        //         contentType: "application/json",
+        //         data: JSON.stringify(data),
+        //         success: function(response) {
+        //         console.log(response)
+        //         },
+        //         error: function(error) {
+        //         console.log(error)
+        //         }
+        //     })
+        // })
+        $(document).ready(() => {
+          $('form').on('submit', (e)=>{
             e.preventDefault()
+            const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODQwMTYxMTUsIm5iZiI6MTU4NDAxNjExNSwianRpIjoiZGVkMWViZTItYzJiOC00MGIyLTlmOTgtNDYyYjgzMmIwMDljIiwiZXhwIjoxNTg0MDE3MDE1LCJpZGVudGl0eSI6InRlc3QiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.__X7pKX2yG8MlIghXNyHk7VsFp3kJ-ZqZg39_CFLoj8"
             $.ajax({
-                url: 'http://127.0.0.1:5000/api/v1/users/test1/edit',
-                method: 'POST',
-                dataType: "JSON",
-                contentType: "application/json",
-                data: JSON.stringify(data),
-                success: function(response) {
-                console.log(response)
-                },
-                error: function(error) {
-                console.log(error)
-                }
-            })
+            url: "http://127.0.0.1:5000/api/v1/user_activity",
+            method: "GET",
+            headers: {"Authorization": `Bearer ${token}`},
+            success: (result) =>{
+              console.log(result)
+            },
+            error: (error) => {
+              console.log(error)
+            }
+          })
+          })
+
         })
     </script>
 </body>

@@ -5,8 +5,8 @@ from models.meal import Meal
 
 class User_Meal(BaseModel):
 
-    user = pw.ForeignKeyField(User, backref='activities')
-    meal = pw.ForeignKeyField(Meal)
+    user = pw.ForeignKeyField(User, backref='meals')
+    meal = pw.ForeignKeyField(Meal, backref='user')
 
-    def validate():
+    def validate(self):
         return

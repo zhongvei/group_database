@@ -5,8 +5,8 @@ from models.activity import Activity
 
 class User_Activity(BaseModel):
 
-    user = pw.ForeignKeyField(User, backref='meals')
-    activity = pw.ForeignKeyField(Activity)
+    user = pw.ForeignKeyField(User, backref='activity')
+    activity = pw.ForeignKeyField(Activity, backref='user')
 
-    def validate():
+    def validate(self):
         return

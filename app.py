@@ -2,9 +2,10 @@ import os
 import config
 from flask import Flask
 from models.base_model import db
-from flask_wtf.csrf import CSRFProtect
 
 app = Flask('GROUP')
+app.secret_key = config.SECRET_KEY
+
 
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")

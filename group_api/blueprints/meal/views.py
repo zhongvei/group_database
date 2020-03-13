@@ -17,8 +17,8 @@ def new_breakfast():
 
     for f in food:
         info = {
-            "food": f.food,
-            "calories": f.calories
+            "label": f"{f.food} - {f.calories}kcal",
+            "value": f.food
         }
         food_data.append(info)
     
@@ -32,8 +32,8 @@ def new_lunch():
 
     for f in food:
         info = {
-            "food": f.food,
-            "calories": f.calories
+            "label": f"{f.food} - {f.calories}kcal",
+            "value": f.food
         }
         food_data.append(info)
     
@@ -47,8 +47,8 @@ def new_dinner():
 
     for f in food:
         info = {
-            "food": f.food,
-            "calories": f.calories
+            "label": f"{f.food} - {f.calories}kcal",
+            "value": f.food
         }
         food_data.append(info)
     

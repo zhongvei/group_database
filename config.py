@@ -38,6 +38,5 @@ class TestingConfig(Config):
     DEBUG = True
     ASSETS_DEBUG = True
 
-GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
-GOOGLE_CLIENT_SERVER = os.getenv('GOOGLE_CLIENT_SERVER')
+SECRET_KEY = os.getenv('SECRET_KEY') or os.urandom(32)
 

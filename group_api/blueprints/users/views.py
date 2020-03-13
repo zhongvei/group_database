@@ -2,10 +2,14 @@ from flask import Blueprint, jsonify, request
 from models.user import User
 from playhouse.shortcuts import model_to_dict
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from app import app
 
 users_api_blueprint = Blueprint('users_api',
                              __name__,
                              template_folder='templates')
+
+jwt = JWTManager(app)
 
 @users_api_blueprint.route('/', methods=['GET'])
 def index():
@@ -35,6 +39,7 @@ def login():
     else:
         if check_password_hash(user.password, password):
             message = {
+                'access_token': create_access_token(identity = user.username),
                 'status' : True,
                 'message': 'Successfully login!'
             }
@@ -68,14 +73,13 @@ def create():
 
     resp = request.get_json()
 
-    name = resp.get('name')
     username = resp.get('username')
     email = resp.get('email')
     password = resp.get('password')
 
     hashed_password = generate_password_hash(password)
     
-    user = User(name = name, email = email, password = hashed_password, username = username)
+    user = User( email = email, password = hashed_password, username = username)
 
     if user.save():
         message = {
@@ -90,21 +94,32 @@ def create():
     return jsonify(message)
 
 
-@users_api_blueprint.route('/<username>/edit', methods = ['POST'])
-def edit(username):
+@users_api_blueprint.route('/edit', methods = ['POST'])
+@jwt_required
+def edit():
 
+    current_user = get_jwt_identity()
+
+    user = User.get_or_none(User.username == current_user)
     resp = request.get_json()
-    user = User.get_or_none(User.username == username)
 
     age = resp.get('age')
     gender = resp.get('gender')
     weight = resp.get('weight')
     height = resp.get('height')
-    
-    user.age = age
-    user.gender = gender
-    user.weight = weight
-    user.height = height
+
+
+    if age != None:
+        user.age = age
+
+    if gender != None:
+        user.gender = gender
+
+    if weight != None :
+        user.weight = weight
+
+    if height != None :
+        user.height = height
 
     if user.save():
         message = {
@@ -119,3 +134,8 @@ def edit(username):
 
     return jsonify(message)
 
+@users_api_blueprint.route('/test',methods = ['POST'])
+@jwt_required
+def test():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
